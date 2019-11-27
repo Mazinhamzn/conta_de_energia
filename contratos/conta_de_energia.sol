@@ -1,4 +1,4 @@
-  pragma solidity 0.5.13;
+pragma solidity 0.5.13;
     
  contract Energia {
     
@@ -21,9 +21,12 @@
         distribuidorEnergia = carteiradistribuidorEnergia;
         
     }
-  
-    function calculoConsumo (uint256 medidaConsumocalculado) public returns (uint256) {
+    
+   function registrarConsumoMensal (uint256 medidaConsumocalculado) public {
         consumoMensal = medidaConsumocalculado;
+   } 
+   
+    function calculoConsumo () public returns (uint256) {
         if (consumoMensal <= 30) {
             contaEnergia = 1 ether;
         }
@@ -39,7 +42,7 @@
         return contaEnergia;
     }
     
-    
+   
     function pagamentocontaEnergia () public payable autorizadoPagamento {
         require(pago == false, "Pagamento não realizado");
         require(msg.value == contaEnergia, "Valor enviado inválido");

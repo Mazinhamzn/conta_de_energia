@@ -42,7 +42,7 @@ function buscaContaEnergia() {
         campoContaEnergia.innerHTML = err;
     });
 
-function buscaCalculoConsumo () {
+function registrarConsumoMensal () {
     var campoConsumoMensal = document.getElementById("campoConsumoMensal");     
     contrato.consumoMensal()
     .then( (consumoMensal) => {

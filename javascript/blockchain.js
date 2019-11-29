@@ -31,7 +31,6 @@ function registrarPagamentoContaEnergia() {
         });
     }
 }
- 
 function buscaContaEnergia() {
     var campoContaEnergia = document.getElementById("campoContaEnergia");     
     contrato.contaEnergia()

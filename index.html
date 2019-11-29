@@ -1,67 +1,61 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Conta de Energia</title>
-    <link rel="stylesheet" href="css/estilo.css">
-</head>
-
-<body>
-        <hr> 
-        <hr> 
-        <hr> 
-        <hr> 
-    <h1>Conta de Energia</h1>
-    <div>O contrato é:  0x6023900dd6bda8cf39f0a009d53ec662a400a2f2</div>
-    <div>O consumo foi de: <span id="campoConsumoMensal">&nbsp;</span></div>
-    <div>O valor a pagar é: <span id="campoContaEnergia">&nbsp;</span></div>
-    <hr> 
-    <h1>A conta foi paga?</h1>
+pragma solidity 0.5.13;
     
-    <form action="#" method="get" id="frmStatus" name="frmStatus" onsubmit="registrarConsumoMensal(); return false;">
-        <div>
-            <label for="txtConsumoMensal ">Informe o consumo mensal: </label>
-            <input type="text" name="txtConsumoMensal" id="txtConsumoMensal" maxlength="8">
-        </div>
-        <div>
-            &nbsp;
-        </div>
-        <div>
-            <button type="submit">Informe o consumo mensal</button>
-        </div>
-        <div><br><hr></div>
-        <div id="caixaConsumoMensalTx">
-            &nbsp;
-        </div>
-        </form>
+ contract Energia {
+    
+    address payable public consumidorEnergia;
+    address payable public distribuidorEnergia;
+    uint256 public contaEnergia;
+    uint public medidaConsumokWh;
+    uint public consumoMensal;
+    bool public pago;
+  
+    event pagamentoRealizado (uint valor);
+    
+    modifier autorizadoPagamento () {
+        require (msg.sender == consumidorEnergia, "Operaçao exclusiva do consumidor");
+        _;    
+    }
+    
+    constructor (address payable carteiraConsumidorEnergia, address payable carteiraDistribuidorEnergia) public {
+        consumidorEnergia = carteiraConsumidorEnergia;
+        distribuidorEnergia = carteiraDistribuidorEnergia;
+        
+    }
+    
+   function registrarConsumoMensal (uint256 medidaConsumocalculado) public {
+        consumoMensal = medidaConsumocalculado;
+   } 
+   
+    function calculoConsumo () public returns (uint256) {
+        if (consumoMensal <= 30) {
+            contaEnergia = 1 ether;
+        }
+        if (consumoMensal > 31 && consumoMensal < 100) {
+            contaEnergia = 2 ether;
+        }
+        if (consumoMensal > 101 && consumoMensal < 220) {
+            contaEnergia = 3 ether;
+        }    
+        if (consumoMensal > 220) {
+            contaEnergia = 4 ether;
+        } 
+        return contaEnergia;
+    }
 
-    <form action="#" method="get" id="frmStatus" name="frmStatus" onsubmit="registrarPagamentoContaEnergia(); return false;">
-        <div>
-            <label for="txtPagamentocontaEnergia ">Informe o status de pagamento: </label>
-            <input type="text" name="txtPagamentocontaEnergia" id="txtPagamentocontaEnergia" maxlength="8">
-        </div>
-        <div>
-            &nbsp;
-        </div>
-        <div>
-            <button type="submit">Registrar Status</button>
-        </div>
-        <div><br><hr class="b"></div>
-        <div id="caixaPagamentocontaEnergiaTx">
-            &nbsp;
-        </div>
-       
-       
-    </form>
-    <p>&nbsp;</p>
-    <script charset="utf-8"  src="https://cdn.ethers.io/scripts/ethers-v4.min.js" type="text/javascript"></script>
-    <script src="javascript/abi.js"></script>    
-    <script src="javascript/blockchain.js"></script>  
-    <script>
-        enviaEther ()
-    </script>  
+    function pagamentoContaEnergia () public payable autorizadoPagamento {
+        require(pago == false, "Pagamento já realizado");
+        require(msg.value == contaEnergia, "Valor enviado inválido");
+        distribuidorEnergia.transfer(address(this).balance);
+        pago = true;
+    }
+    
+    function enviaEther() public returns(bool) {
+        require(msg.sender==consumidorEnergia, "Somente o consumidor de Energia tem permissão para enviar Ether para este contrato");
+        require(address(this).balance>0, "O contrato não tem saldo");
+        consumidorEnergia.transfer(address(this).balance);
+        return true;
+    }
+    
+   
 
-</body>
-</html>
+ }

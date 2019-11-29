@@ -16,9 +16,9 @@ pragma solidity 0.5.13;
         _;    
     }
     
-    constructor (address payable carteiraconsumidorEnergia, address payable carteiradistribuidorEnergia) public {
-        consumidorEnergia = carteiraconsumidorEnergia;
-        distribuidorEnergia = carteiradistribuidorEnergia;
+    constructor (address payable carteiraConsumidorEnergia, address payable carteiraDistribuidorEnergia) public {
+        consumidorEnergia = carteiraConsumidorEnergia;
+        distribuidorEnergia = carteiraDistribuidorEnergia;
         
     }
     
@@ -41,12 +41,17 @@ pragma solidity 0.5.13;
         } 
         return contaEnergia;
     }
-    
-   
-    function pagamentocontaEnergia () public payable autorizadoPagamento {
+
+    function pagamentoContaEnergia () public payable autorizadoPagamento {
         require(pago == false, "Pagamento não realizado");
         require(msg.value == contaEnergia, "Valor enviado inválido");
         distribuidorEnergia.transfer(address(this).balance);
     }
-
- }
+    
+    function enviaEther() public returns(bool) {
+        require(msg.sender==consumidorEnergia, "Somente o consumidor de Energia tem permissão para enviar Ether para este contrato");
+        require(address(this).balance>0, "O contrato não tem saldo");
+        consumidorEnergia.transfer(address(this).balance);
+        return true;
+    }
+    

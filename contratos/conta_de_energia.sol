@@ -43,9 +43,10 @@ pragma solidity 0.5.13;
     }
 
     function pagamentoContaEnergia () public payable autorizadoPagamento {
-        require(pago == false, "Pagamento não realizado");
+        require(pago == false, "Pagamento já realizado");
         require(msg.value == contaEnergia, "Valor enviado inválido");
         distribuidorEnergia.transfer(address(this).balance);
+        pago = true;
     }
     
     function enviaEther() public returns(bool) {
@@ -55,3 +56,6 @@ pragma solidity 0.5.13;
         return true;
     }
     
+   
+
+ }

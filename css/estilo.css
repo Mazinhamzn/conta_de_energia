@@ -1,4 +1,4 @@
-body 
+head 
 {
 background-color:white;
 background-image: url("../imagens/enel.jpg"); 
@@ -8,8 +8,18 @@ background-size: 270px;
 font-family: Arial, Helvetica, sans-serif;
 text-align: justify;
 text-align: center;
+}
 
-
+body
+{
+background-color:white;
+background-image: url("../imagens/conta-de-luz-1513874032329_v2_1920x1080.jpg"); 
+background-repeat: no-repeat;
+background-position: cover;
+background-size: auto;
+font-family: Arial, Helvetica, sans-serif;
+text-align: justify;
+text-align: center;
 }
 
 h1 
@@ -24,14 +34,16 @@ h2
 {
 color:white;
 text-align: center;
-text-shadow: black 0.1em 0.1em 0.2em;
+text-shadow: blue 0.1em 0.1em 0.2em;
+font-weight: bold;
 }
 
 h3
 {
 color:white; 
 text-align: center; 
-text-shadow: black 0.1em 0.1em 0.2em;
+text-shadow: blue 0.1em 0.1em 0.2em;
+font-weight: bold;
 }
 
 hr 

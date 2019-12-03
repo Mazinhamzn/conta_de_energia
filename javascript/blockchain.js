@@ -1,56 +1,45 @@
-var enderecoContrato = "0x6023900dd6bda8cf39f0a009d53ec662a400a2f2";
+var enderecoContrato = "0xe5c89c66a7b3976082b14a22242e56500925ec12";
 var provedor = new ethers.providers.Web3Provider(web3.currentProvider);
 ethereum.enable();
 var signatario = provedor.getSigner();
 var contrato = new ethers.Contract(enderecoContrato, abiContrato, signatario);
 
-function registrarPagamentoContaEnergia() {
+function pagamentoContaEnergia() {
     var textoCampo = document.frmStatus.txtPagamentocontaEnergia.value;
-    var caixaPagamentocontaEnergiaTx = document.getElementById("caixaPagamentocontaEnergiaTx");
+    var pagamentoContaEnergiatx = document.getElementById("pagamentoContaEnergiatx");
     if (textoCampo.length === 8) {
-        caixaPagamentocontaEnergiaTx.innerHTML = "Enviando transação...";
+        pagamentoContaEnergiatx.innerHTML = "Enviando transação...";
         contrato.mudaStatusPagamento(textoCampo)
         .then( (transacao) => {
-            console.log("registrarPagamentoContaEnergia - Transacao ", transacao);   
-            caixaPagamentocontaEnergiaTx.innerHTML = "Transação enviada. Aguardando processamento...";
+            console.log("pagamentoContaEnergia - Transacao ", transacao);   
+            pagamentoContaEnergiatx.innerHTML = "Transação enviada. Aguardando processamento...";
             transacao.wait()
             .then( (resultado) => {
                 buscaStatusContrato();
-                caixaPagamentocontaEnergiaTx.innerHTML = "Transação realizada.";
+                pagamentoContaEnergiatx.innerHTML = "Transação realizada.";
             })       
             .catch( (err) => {
-                console.error("registrarPagamentoContaEnergia - Aguardando tx ser minerada");
+                console.error("pagamentoContaEnergia - Aguardando tx ser minerada");
                 console.error(err);
-                caixaPagamentocontaEnergiaTx.innerHTML = "Algo saiu errado: " + err.message;
+                pagamentoContaEnergiatx.innerHTML = "Algo saiu errado: " + err.message;
             });
         })
             .catch( (err) => {
-                 console.error("registrarPagamentoContaEnergia");
+                 console.error("pagamentoContaEnergia");
                 console.error(err);
-                caixaPagamentocontaEnergiaTx.innerHTML = "Algo saiu errado: " + err.message;
+                pagamentoContaEnergiatx.innerHTML = "Algo saiu errado: " + err.message;
         });
     }
-}
-function buscaContaEnergia() {
-    var campoContaEnergia = document.getElementById("campoContaEnergia");     
-    contrato.contaEnergia()
-    .then( (contaEnergia) => {
-        campoContaEnergia.innerHTML = contaEnergia;
-    })
-    .catch( (err) => {
-        console.error(err);
-        campoContaEnergia.innerHTML = err;
-    });
 
 function registrarConsumoMensal () {
-    var campoConsumoMensal = document.getElementById("campoConsumoMensal");     
+    var caixaConsumoMensalTx = document.getElementById("caixaConsumoMensalTx");     
     contrato.consumoMensal()
     .then( (consumoMensal) => {
-        campoConsumoMensal.innerHTML = consumoMensal;
+        caixaConsumoMensalTx.innerHTML = consumoMensal;
     })
     .catch( (err) => {
         console.error(err);
-        campoConsumoMensal.innerHTML = err;
+        caixaConsumoMensalTx.innerHTML = err;
     });
 }
 }

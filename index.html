@@ -14,12 +14,15 @@
         <hr> 
         <hr> 
     <h1>Conta de Energia</h1>
-    <div>O contrato é:  0x6023900dd6bda8cf39f0a009d53ec662a400a2f2</div>
-    <div>O consumo foi de: <span id="campoConsumoMensal">&nbsp;</span></div>
-    <div>O valor a pagar é: <span id="campoContaEnergia">&nbsp;</span></div>
+    <div><h3>O contrato é:  0x6023900dd6bda8cf39f0a009d53ec662a400a2f2</h3></div>
+    <h2> Considerar a tabela de consumo:</h2>
+            <h2><= 30 = 1 ether</h2>
+            <h2>> 31 < 100 = 2 ether</h2>
+            <h2>> 101 < 220 = 3 ethers</h2>
+            <h2>> 220= 4 ethers</h2>
     <hr> 
-    <h1>A conta foi paga?</h1>
-    <div id="formPagamento">
+    <h1>O consumo foi de:</h1>
+    <div id="formConsumoMensal">
         <form action="#" method="get" id="frmStatus" name="frmStatus" onsubmit="registrarConsumoMensal(); return false;">
             <div>
                 <label for="txtConsumoMensal "> </label>
@@ -36,6 +39,26 @@
                 &nbsp;
             </div>
         </form>
+        <form name="frmPayment" id="frmPayment" action="#" method="get" onsubmit="pagamentoContaEnergia(); return false;">
+        <div>
+            <label for="amount"> <h1>Valor a pagar:</h1> </label>
+        </div>
+        <div>
+        <hr>
+            <input type="number" name="amount" id="amount" value="1"> <h3>em ethers</h3>
+        </div>
+        <div>
+            &nbsp;
+        </div>
+        <div>
+            <button type="submit">Confirme o pagamento</button>
+        </div>
+        <div>
+            &nbsp;
+        </div>
+        <div id="pagamentoContaEnergiatx">
+        </div>
+    </form>
     </div>
     <p>&nbsp;</p>
     <script charset="utf-8"  src="https://cdn.ethers.io/scripts/ethers-v4.min.js" type="text/javascript"></script>

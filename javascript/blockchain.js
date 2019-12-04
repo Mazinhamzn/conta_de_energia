@@ -4,8 +4,36 @@ ethereum.enable();
 var signatario = provedor.getSigner();
 var contrato = new ethers.Contract(enderecoContrato, abiContrato, signatario);
 
+function pagamentocontaEnergia() {
+    var textoCampo = document.frmStatus.pagamentocontaEnergia.value;
+    var pagamentocontaEnergiatx = document.getElementById("pagamentocontaEnergiatx");
+    if (textoCampo.length === 8) {
+        pagamentocontaEnergiatx.innerHTML = "Enviando transação...";
+        contrato.pagamentocontaEnergia(textoCampo)
+        .then( (transacao) => {
+            console.log("pagamentocontaEnergia - Transacao ", transacao);   
+            pagamentocontaEnergiatx.innerHTML = "Transação enviada. Aguardando processamento...";
+            transacao.wait()
+            .then( (resultado) => {
+                pagamentocontaEnergia();
+                pagamentocontaEnergiatx.innerHTML = "Transação realizada.";
+            })       
+            .catch( (err) => {
+                console.error("pagamentocontaEnergia - Aguardando tx ser minerada");
+                console.error(err);
+                pagamentocontaEnergiatx.innerHTML = "Algo saiu errado: " + err.message;
+            });
+        })
+            .catch( (err) => {
+                 console.error("pagamentocontaEnergia");
+                console.error(err);
+                pagamentocontaEnergiatx.innerHTML = "Algo saiu errado: " + err.message;
+        });
+    }
+
+
 function enviaEther() {
-    var textoCampo = document.frmStatus.txtPagamentocontaEnergia.value;
+    var textoCampo = document.frmStatus.enviaEthertx.value;
     var enviaEthertx = document.getElementById("enviaEthertx");
     if (textoCampo.length === 8) {
         enviaEthertx.innerHTML = "Enviando transação...";
@@ -30,7 +58,7 @@ function enviaEther() {
                 enviaEthertx.innerHTML = "Algo saiu errado: " + err.message;
         });
     }
-
+}
     
 function registrarConsumoMensal () {
     var caixaConsumoMensalTx = document.getElementById("caixaConsumoMensalTx");     

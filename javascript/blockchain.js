@@ -4,33 +4,34 @@ ethereum.enable();
 var signatario = provedor.getSigner();
 var contrato = new ethers.Contract(enderecoContrato, abiContrato, signatario);
 
-function pagamentoContaEnergia() {
+function enviaEther() {
     var textoCampo = document.frmStatus.txtPagamentocontaEnergia.value;
-    var pagamentoContaEnergiatx = document.getElementById("pagamentoContaEnergiatx");
+    var enviaEthertx = document.getElementById("enviaEthertx");
     if (textoCampo.length === 8) {
-        pagamentoContaEnergiatx.innerHTML = "Enviando transação...";
-        contrato.mudaStatusPagamento(textoCampo)
+        enviaEthertx.innerHTML = "Enviando transação...";
+        contrato.enviaEther(textoCampo)
         .then( (transacao) => {
-            console.log("pagamentoContaEnergia - Transacao ", transacao);   
-            pagamentoContaEnergiatx.innerHTML = "Transação enviada. Aguardando processamento...";
+            console.log("enviaEther - Transacao ", transacao);   
+            enviaEthertx.innerHTML = "Transação enviada. Aguardando processamento...";
             transacao.wait()
             .then( (resultado) => {
-                buscaStatusContrato();
-                pagamentoContaEnergiatx.innerHTML = "Transação realizada.";
+                enviaEther();
+                enviaEthertx.innerHTML = "Transação realizada.";
             })       
             .catch( (err) => {
-                console.error("pagamentoContaEnergia - Aguardando tx ser minerada");
+                console.error("enviaEther - Aguardando tx ser minerada");
                 console.error(err);
-                pagamentoContaEnergiatx.innerHTML = "Algo saiu errado: " + err.message;
+                enviaEthertx.innerHTML = "Algo saiu errado: " + err.message;
             });
         })
             .catch( (err) => {
-                 console.error("pagamentoContaEnergia");
+                 console.error("enviaEther");
                 console.error(err);
-                pagamentoContaEnergiatx.innerHTML = "Algo saiu errado: " + err.message;
+                enviaEthertx.innerHTML = "Algo saiu errado: " + err.message;
         });
     }
 
+    
 function registrarConsumoMensal () {
     var caixaConsumoMensalTx = document.getElementById("caixaConsumoMensalTx");     
     contrato.consumoMensal()
